@@ -50,77 +50,70 @@ class Opening:
 		
 		self.vertices = [ 
 			# devant pgauche
-			[0, 0, 0],
-			[0, 0, h], 
-			[0+t, 0, h],
-			[0+t, 0, 0],
-			# derriere pgauche
-			[0, t, 0], 
-			[0+t, t, 0], 
-			[0+t, t, h],
-			[0, t, h], 
-			# devant phaut
-			[0, 0, h-t],
-			[0, 0, h], 
-			[w, 0, h],
-			[w, 0, h-t],
-			# derriere phaut
-			[0, t, h-t], 
-			[w, t, h-t], 
-			[w, t, h],
-			[0, t, h], 	
-			# devant pdroite
-			[w, 0, 0],
-			[w, 0, h], 
-			[w-t, 0, h],
-			[w-t, 0, 0],
-			# derriere pdroite
-			[w, t, 0], 
-			[w-t, t, 0], 
-			[w-t, t, h],
-			[w, t, h],
-			# devant pbas
-			[0, 0, h-t],
-			[0, 0, h], 
-			[w, 0, h],
-			[w, 0, h-t],
-			# derriere pbas
-			[0, t, h-t], 
-			[w, t, h-t], 
-			[w, t, h],
-			[0, t, h]
+			[0, 0, 0],             
+			[0, 0, h],             
+			[0+t, 0, h],           
+			[0+t, 0, 0],           
+			# derriere pgauche     
+			[0, t, 0],             
+			[0+t, t, 0],           
+			[0+t, t, h],           
+			[0, t, h],             
+			# devant phaut         
+			[0, 0, h-t],           
+			[0, 0, h],             
+			[w, 0, h],             
+			[w, 0, h-t],           
+			# derriere phaut       
+			[0, t, h-t],           
+			[w, t, h-t],           
+			[w, t, h],             
+			[0, t, h], 	           
+			# devant pdroite       
+			[w, 0, 0],             
+			[w, 0, h],             
+			[w-t, 0, h],           
+			[w-t, 0, 0],           
+			# derriere pdroite     
+			[w, t, 0],             
+			[w-t, t, 0],           
+			[w-t, t, h],           
+			[w, t, h],             
+			# devant pbas          
+			[0, 0, t],           
+			[0, 0, 0],             
+			[w, 0, 0],             
+			[w, 0, t],           
+			# derriere pbas        
+			[0, t, t],           
+			[w, t, t],           
+			[w, t, 0],             
+			[0, t, 0]              
 		]
-		self.faces = [ # sens anti-horaire
-			[0, 3, 2, 1], # devant   pgauche
-			[4, 7, 6, 5], # derriere pgauche
-			[0, 1, 7, 4], # gauche   pgauche
-			[2, 3, 5, 6], # droite   pgauche
-			[1, 2, 6, 7], # haut     pgauche
-			[3, 0, 4, 5],  # bas     pgauche
-			
-			[0, 3, 2, 1], # devant   pdoite
-			[4, 7, 6, 5], # derriere pdoite
-			[0, 1, 7, 4], # gauche   pdoite
-			[2, 3, 5, 6], # droite   pdoite
-			[1, 2, 6, 7], # haut     pdoite
-			[3, 0, 4, 5],  # bas     pdoite
-			
-			[0, 3, 2, 1], # devant   phaut
-			[4, 7, 6, 5], # derriere phaut
-			[0, 1, 7, 4], # gauche   phaut
-			[2, 3, 5, 6], # droite   phaut
-			[1, 2, 6, 7], # haut     phaut
-			[3, 0, 4, 5],  # bas     phaut
-			
-			[0, 3, 2, 1], # devant   pbas
-			[4, 7, 6, 5], # derriere pbas
-			[0, 1, 7, 4], # gauche   pbas
-			[2, 3, 5, 6], # droite   pbas
-			[1, 2, 6, 7], # haut     pbas
-			[3, 0, 4, 5],  # bas     pbas
-		]    
+		
+		self.faces = []
+		for i in range(0, len(self.vertices), 8):
+			self.faces += [
+				[0+i, 3+i, 2+i, 1+i], # devant   
+				[4+i, 7+i, 6+i, 5+i], # derriere 
+				[0+i, 1+i, 7+i, 4+i], # gauche   
+				[2+i, 3+i, 5+i, 6+i], # droite   
+				[1+i, 2+i, 6+i, 7+i], # haut     
+				[3+i, 0+i, 4+i, 5+i],  # bas     
+			]
 		
 	# Draws the faces                
 	def draw(self):        
 		# A compléter en remplaçant pass par votre code
-		pass
+		gl.glPushMatrix()
+		gl.glTranslatef(self.parameters['position'][0], self.parameters['position'][1], self.parameters['position'][2])
+		
+		gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL) # on trace les faces : GL_FILL
+		for face in self.faces:
+			gl.glBegin(gl.GL_QUADS) 
+			gl.glColor3fv(self.parameters['color'])
+			for pointInd in face: 
+				gl.glVertex3fv(self.vertices[pointInd])
+			gl.glEnd()
+		
+		gl.glPopMatrix()
