@@ -6,6 +6,9 @@ Created on Thu Nov 16 19:47:50 2017
 """
 import OpenGL.GL as gl
 
+import copy
+#import pdb
+
 class Section:
 	# Constructor
 	def __init__(self, parameters = {}) :  
@@ -76,34 +79,40 @@ class Section:
 	# Checks if the opening can be created for the object x
 	def canCreateOpening(self, x):
 		# A compléter en remplaçant pass par votre code
-		return [ x.parameters[p[1]] + x.parameters["position"][p[0]] <= self.parameters[p[1]] and \
-		x.parameters["position"][p[0]] >= 0 and \
-		x.parameters["position"][p[0]] <= self.parameters[p[1]] for p in [(1,"width"),(2,"height")]] == [True]*2
+		return [ 
+			x.parameters[p[1]] + x.parameters["position"][p[0]] <= self.parameters["position"][p[0]] + self.parameters[p[1]] and \
+			x.parameters["position"][p[0]] >= self.parameters["position"][p[0]] \
+			for p in [(0,"width"),(2,"height"), (1,"thickness")]
+		] == [True]*3
 		
 	# Creates the new sections for the object x
 	def createNewSections(self, x):
 		# A compléter en remplaçant pass par votre code
+
+		# on considère que x a passé le test canCreateOpening
 		sections = []
 		# section gauche
-		w = x.parameters["position"][0]
+		w = x.parameters["position"][0]-self.parameters["position"][0]
 		if w != 0 : 
-			param = self.parameters ; param["width"] = w
+			param = copy.deepcopy(self.parameters) ; param["width"] = w
 			sections.append(Section(param))  
 		# section basse
-		h = x.parameters["position"][1]
+		h = x.parameters["position"][2]-self.parameters["position"][2]
 		if h != 0 : 
-			param = self.parameters ; param["height"] = h
+			param = copy.deepcopy(self.parameters) ; param["height"] = h
 			sections.append(Section(param))
 		# section droite
-		w = self.parameters["width"] - x.parameters["position"][0] - x.parameters["width"] 
-		#if w != 0 : 
-		#	param = self.parameters ; param["width"] = w
-		#	sections.append(Section(param))  
-		## section haute
-		#h = x.parameters["position"][1]
-		#if h != 0 : 
-		#	param = self.parameters ; param["height"] = h
-		#	sections.append(Section(param))             
+		w = self.parameters["width"]+self.parameters["position"][0] - x.parameters["position"][0]-x.parameters["width"] 
+		if w != 0 : 
+			param = copy.deepcopy(self.parameters) ; param["width"] = w ; param["position"][0] = x.parameters["position"][0]+x.parameters["width"] 
+			sections.append(Section(param))  
+		# section haute
+		h = self.parameters["height"]+self.parameters["position"][2] - x.parameters["position"][2]-x.parameters["height"] 
+		if h != 0 : 
+			param = copy.deepcopy(self.parameters) ; param["height"] = h ; param["position"][2] = x.parameters["position"][2]+x.parameters["height"] 
+			sections.append(Section(param))  
+		
+		return sections           
 		
 	# Draws the edges
 	def drawEdges(self):

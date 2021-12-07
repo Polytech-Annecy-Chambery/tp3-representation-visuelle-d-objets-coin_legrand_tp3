@@ -128,7 +128,8 @@ class Door:
         gl.glPushMatrix()  
                 
         # Defines the new transformation matrix : translation
-        gl.glTranslatef(self.parameters['position'][0], self.parameters['position'][1], 0)
+        #gl.glTranslatef(self.parameters['position'][0], self.parameters['position'][1], 0)  ->  pourquoi ?
+        gl.glTranslatef(self.parameters['position'][0], self.parameters['position'][1], self.parameters['position'][2])
         
         # Rotation for the door if it is opened
         if self.getParameter('openDoor') == True:         

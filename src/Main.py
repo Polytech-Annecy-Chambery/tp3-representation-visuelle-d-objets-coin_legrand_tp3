@@ -72,7 +72,8 @@ def Q5b():
 def Q5c1():      
 	section = Section({'width':7, 'height':2.6})
 	opening1 = Opening({'position': [2, 0, 0], 'width':0.9, 'height':2.15, 'thickness':0.2, 'color': [0.7, 0.7, 0.7]})
-	sections = section.createOpening(opening1)
+	#sections = section.createOpening(opening1)
+	sections = section.createNewSections(opening1)
 	configuration = Configuration()
 	for x in sections:
 		configuration.add(x)    
@@ -81,6 +82,7 @@ def Q5c1():
 def Q5c2():      
 	section = Section({'width':7, 'height':2.6})
 	opening2 = Opening({'position': [4, 0, 1.2], 'width':1.25, 'height':1, 'thickness':0.2, 'color': [0.7, 0.7, 0.7]}) 
+	#sections = section.createNewSections(opening2)
 	sections = section.createNewSections(opening2)
 	configuration = Configuration()
 	for section in sections:
@@ -88,10 +90,23 @@ def Q5c2():
 	return configuration    
 
 def Q5d():      
-	pass
+	wall = Wall({'position': [0, 0, 0], 'width': 7, 'height': 2.6, "thickness": 0.4, "orientation": 0})
+	wall.add( Opening({'position': [2, 0.1, 0], 'width':0.9, 'height': 2.15, 'thickness':0.2, 'color': [0.7, 0.7, 0.7]}) )
+	wall.add( Opening({'position': [4, 0.1, 1.2], 'width':1.25, 'height': 1, 'thickness':0.2, 'color': [0.7, 0.7, 0.7]}) )
+	configuration = Configuration()
+	configuration.add(wall)
+	return configuration
 	
 def Q6():  
-	pass  
+	wall = Wall({'position': [0, 0, 0], 'width': 7, 'height': 2.6, "thickness": 0.4, "orientation": 0})
+	#wall.add( Opening({'position': [2, 0.1, 0], 'width':0.9, 'height': 2.15, 'thickness':0.2, 'color': [0.7, 0.7, 0.7]}) )
+	#wall.add( Opening({'position': [4, 0.1, 1.2], 'width':1.25, 'height': 1, 'thickness':0.2, 'color': [0.7, 0.7, 0.7]}) )
+	wall.add(Door({'position': [2.1, 0.1, 0.3], 'width':0.9, 'height': 2.15, 'thickness':0.2, 'color': [1, 0, 0]}))
+	#wall.add( Door({'position': [2.1, 0.1, 0.1], 'width':0.8, 'height': 2, 'thickness':0.2, 'color': [1, 0, 0]}) )
+	#wall.add( Window({'position': [4.05, 0.1, 1.25], 'width':1.2, 'height': 0.95, 'thickness':0.2, 'color': [0.9, 0.9, 1]}) )
+	configuration = Configuration()
+	configuration.add(wall)
+	return configuration  
  
 def main():
 	# Enlever un des commentaires pour la question traitée
@@ -103,13 +118,30 @@ def main():
 	#configuration = Q3a()
 	#configuration = Q4a()
 	#configuration = Q5a()
-	configuration = Q5b()
-	# configuration = Q5c1()
-	# configuration = Q5c2() 
-	# configuration = Q5d()
-	# configuration = Q6()
+	#configuration = Q5b()
+	#configuration = Q5c1()
+	#configuration = Q5c2() 
+	#configuration = Q5d()
+	#configuration = Q6()
 	configuration.display()
 		 
 # Calls the main function
 if __name__ == "__main__":
-	main()    
+	#main() 
+	
+	doors = [ Door({'position': [2.1, 0.1, 0.1], 'width':0.8, 'height': 2, 'thickness':0.2, 'color': [1, 0, 0]}) ]
+	house = House().add(
+		Wall({'position': [0, 0, 0], 'width': 7, 'height': 2.6, "thickness": 0.4, "orientation": 0})\
+		.add(doors[0])
+		.add(Window({'position': [4.05, 0.1, 1.25], 'width':1.2, 'height': 0.95, 'thickness':0.2, 'color': [0.9, 0.9, 1]}))
+	).add(
+		Wall({'position': [7, 0, 0], 'width': 7, 'height': 2.6, "thickness": 0.4, "orientation": 90})
+	).add(
+		Wall({'position': [0, 0, 0], 'width': 7, 'height': 2.6, "thickness": 0.4, "orientation": 90})
+	).add(
+		Wall({'position': [-0.4, 7, 0], 'width': 7+0.4, 'height': 2.6, "thickness": 0.4, "orientation": 0})
+	)
+	
+	configuration = Configuration()
+	configuration.add(house).display(doors)
+	

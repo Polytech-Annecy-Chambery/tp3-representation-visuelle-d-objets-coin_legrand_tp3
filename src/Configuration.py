@@ -7,6 +7,8 @@ Created on Thu Nov 16 19:47:50 2017
 import pygame
 import OpenGL.GL as gl
 import OpenGL.GLU as glu
+
+#import pdb
 	   
 class Configuration:
 	
@@ -177,7 +179,7 @@ class Configuration:
 			gl.glTranslatef(self.event.rel[0]*0.1, 0, -self.event.rel[1]*0.1)
 		 
 	# Displays on screen and processes events    
-	def display(self): 
+	def display(self, interactives=[]): 
 		   
 		# Displays on screen
 		self.draw()
@@ -207,6 +209,8 @@ class Configuration:
 			
 			elif self.event.type == pygame.MOUSEMOTION: 
 				self.processMouseMotionEvent()
+			
+			for obj in interactives : obj.processPygameUserEvent()
 				
 			# Clears the buffer and displays on screen the result of the keybord action
 			gl.glClear(gl.GL_COLOR_BUFFER_BIT|gl.GL_DEPTH_BUFFER_BIT)

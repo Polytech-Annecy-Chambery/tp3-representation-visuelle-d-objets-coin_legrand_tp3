@@ -7,6 +7,8 @@ Created on Thu Nov 16 19:47:50 2017
 import OpenGL.GL as gl
 from Section import Section
 
+import pdb
+
 class Wall:
 	# Constructor
 	def __init__(self, parameters = {}) :  
@@ -66,7 +68,13 @@ class Wall:
 	# Adds an object    
 	def add(self, x):    
 		# A compléter en remplaçant pass par votre code
-		pass  
+		res = self.findSection(x)
+		if not res is None:
+			self.objects.pop(res[0])
+			self.objects.extend( res[1].createNewSections(x) )
+			self.objects+= [x]
+		
+		return self
 					
 	# Draws the faces
 	def draw(self):
