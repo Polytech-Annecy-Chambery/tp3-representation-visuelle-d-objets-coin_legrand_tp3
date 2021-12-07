@@ -159,8 +159,11 @@ class Configuration:
 			gl.glScalef(1/1.1, 1/1.1, 1/1.1)
 	
 	# Processes the MOUSEBUTTONDOWN event
-	def processMouseButtonDownEvent(self):
-		if self.event.button == 4: # wheelup
+	def processMouseButtonDownEvent(self, interactives):
+		if self.event.button == 1:
+			pass
+			#for obj in interactives : obj.processPygameUserEvent(self.event)
+		elif self.event.button == 4: # wheelup
 			gl.glMatrixMode(gl.GL_MODELVIEW)
 			gl.glScalef(1.1, 1.1, 1.1)
 		elif self.event.button == 5: # wheeldown
@@ -205,12 +208,10 @@ class Configuration:
 				self.processKeyDownEvent()
 				
 			elif self.event.type == pygame.MOUSEBUTTONDOWN:
-				self.processMouseButtonDownEvent() 
+				self.processMouseButtonDownEvent(interactives) 
 			
 			elif self.event.type == pygame.MOUSEMOTION: 
 				self.processMouseMotionEvent()
-			
-			for obj in interactives : obj.processPygameUserEvent()
 				
 			# Clears the buffer and displays on screen the result of the keybord action
 			gl.glClear(gl.GL_COLOR_BUFFER_BIT|gl.GL_DEPTH_BUFFER_BIT)
